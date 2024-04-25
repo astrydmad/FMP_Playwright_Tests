@@ -1,3 +1,6 @@
+class Cookies():
+    ACCEPT_COOKIES = "//label[@aria-label='Accept All']"
+
 class HeaderLocators():
     MAIN_LOGO = "//*[@data-id='2848f75' and not(contains(@style, 'visibility: hidden'))]//img[contains(@src, 'https://feelmypaint.com/wp-content/uploads/2023/11/logologo.png')]"
     PAINTS_TOP_MENU_BUTTON = "//*[contains(@id, 'menu-1-7edf42c')]//a[contains(@href, 'paints')]"
@@ -5,5 +8,37 @@ class HeaderLocators():
     HOW_TOP_MENU_BUTTON = "//*[contains(@id, 'menu-1-7edf42c')]//a[contains(@href, 'how')]"
     SHOP_TOP_MENU_BUTTON = "//*[contains(@id, 'menu-1-7edf42c')]//a[contains(@href, 'shop')]"
     CONTACT_TOP_MENU_BUTTON = "//*[contains(@id, 'menu-1-7edf42c')]//a[contains(@href, 'contact')]"
-    LANGUAGE_CHOOSER_DROPDOWN = "*//li[contains(@class, 'menu-item') and contains(@class, 'wpml-ls-slot-4') and contains(@class, 'wpml-ls-current-language')]"
+    LANGUAGE_CHOOSER_DROPDOWN = "*//li[contains(@class, 'menu-item') and contains(@class, 'wpml-ls-slot-4') and contains(@class, 'wpml-ls-current-language')]//a[@title='English']//span[@class='wpml-ls-native']"
     CART = "//*[@id='elementor-menu-cart__toggle_button']"
+
+class FooterLocators():
+    ACCOUNT = "//*[@id='menu-1-3368bae']//*[contains(@href, 'my-account')]"
+    CHECKOUT = "//*[@id='menu-1-3368bae']//*[contains(@href, 'checkout')]"
+    CART = "//*[@id='menu-1-3368bae']//*[contains(@href, 'cart')]"
+    SHOP = "//*[@id='menu-1-3368bae']//*[contains(@href, 'shop')]"
+    PRIVACY_POLISY = "//*[@id='menu-1-065e6e6']//*[contains(@href, 'privacy-policy')]"
+    REGULATIONS = "//*[@id='menu-1-065e6e6']//*[contains(@href, 'regulations')]"
+    TRANSPORTATION_DELIVERY = "//*[@id='menu-1-065e6e6']//*[contains(@href, 'delivery')]"
+    PAYMENTS = "//*[@id='menu-1-065e6e6']//*[contains(@href, 'payment')]"
+    COMPLAINTS_RETURNS = "//*[@id='menu-1-065e6e6']//*[contains(@href, 'complaints')]"
+    FOOTER_FMP_LOGO = "*//img[contains(@class, 'wp-image-73')]"
+    COMPANY_INFO = "//p[contains(text(), 'FeelMyPaint sp. z o.o., Poland')]"
+    COMPANY_EMAIL = "//p[contains(.,'E-mail: info@feelmypaint.com')]"
+    COMPANY_NIP = "//p[contains(., 'NIP: 6783199623')]"
+    YOUTUBE_ICON_FOOTER = "//a[@href='https://www.youtube.com/@FeelMyPaint' and contains(@class, 'c90f069')]"
+    INSTAGRAM_ICON_FOOTER = "//a[(@href='https://www.instagram.com/feelmypaint_official/') and contains(@class, 'a90b5a4')]"
+    FACEBOOK_ICON_FOOTER = "//a[(@href='https://www.facebook.com/feelmypaintpl') and contains(@class, 'e49f77d')]"
+
+class PaintsPageLocators():
+    PHTALO_GREEN_IMAGE = "//*[@data-id='15a2dd6']//img[contains(@src, 'https://feelmypaint.com/wp-content/uploads/2024/02/fmp_green.webp')]"
+    PIROLLE_RED_IMAGE = "//*[@data-id='617de84']//img[contains(@src, 'https://feelmypaint.com/wp-content/uploads/2024/02/fmp_red.webp')]"
+    BROWN_OXIDE_IMAGE = "//*[@data-id='b7dc318']//img[contains(@src, 'https://feelmypaint.com/wp-content/uploads/2024/03/fmp_brown-1')]"
+    TITANIUM_WHITE_IMAGE = "//*[@data-id='d616b7c']//img[contains(@src, 'https://feelmypaint.com/wp-content/uploads/2024/02/fmp_white.webp')]"
+    YELLOW_OXIDE_IMAGE = "//*[@data-id='bed5c02']//img[contains(@src, 'https://feelmypaint.com/wp-content/uploads/2023/11/fmp_yellow_shadow.jpg')]"
+    PHTALO_BLUE_IMAGE = "//*[@data-id='5631815']//img[contains(@src, 'https://feelmypaint.com/wp-content/uploads/2023/11/fmp_blue_shadow.jpg')]"
+    MARS_RED_IMAGE = "//*[@data-id='c9de5e5']//img[contains(@src, 'https://feelmypaint.com/wp-content/uploads/2023/11/fmp_red_shadow.jpg')]"
+    WARM_GREEN_IMAGE = "//*[@data-id='17e1f7d']//img[contains(@src, 'https://feelmypaint.com/wp-content/uploads/2023/11/photo_2023-11-18_12-47-31.jpg')]"
+    ULTRAMARINE_IMAGE = "//*[@data-id='7518da5']//img[contains(@src, 'https://feelmypaint.com/wp-content/uploads/2024/02/fmp_blue.webp')]"
+    PRIMARY_YELLOW_IMAGE = "//*[@data-id='4de3d56']//img[contains(@src, 'https://feelmypaint.com/wp-content/uploads/2024/02/fmp_yellow.webp')]"
+    MARS_BLACK_IMAGE = "//*[@data-id='68d53dd']//img[contains(@src, 'https://feelmypaint.com/wp-content/uploads/2024/02/fmp_black.webp')]"
+    VIOLET_IMAGE = "//*[@data-id='17c333f']//img[contains(@src, 'https://feelmypaint.com/wp-content/uploads/2024/03/fmp_tube_jpeg_shadow_violet-2')]"
