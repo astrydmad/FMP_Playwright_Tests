@@ -2,6 +2,8 @@ from pages.locators import PaintsPageLocators
 from playwright.sync_api import expect
 from test_header import verify_header_elements
 from test_footer import verify_footer_elements
+import pytest
+import time
 
 #create a dictionary where key = data-id attribute and values = list of strings to check
 paints_info = {
@@ -22,12 +24,12 @@ paints_info = {
 #create a dictionary where key = data-id attribute and value = paint image locator variable
 paints_images = {
     "15a2dd6": "PHTALO_GREEN_IMAGE",
-    "617de84": "PIROLLE_RED_IMAGE",
+    "617de84": "PYRROLE_RED_IMAGE",
     "b7dc318": "BROWN_OXIDE_IMAGE",
     "d616b7c": "TITANIUM_WHITE_IMAGE",
     "bed5c02": "YELLOW_OXIDE_IMAGE",
     "5631815": "PHTALO_BLUE_IMAGE",
-    "c9de5e5": "MARS_RED_IMAGE",
+    "c9de5e5": "RED_OXIDE_IMAGE",
     "17e1f7d": "WARM_GREEN_IMAGE",
     "7518da5": "ULTRAMARINE_IMAGE",
     "4de3d56": "PRIMARY_YELLOW_IMAGE",
@@ -47,6 +49,132 @@ def verify_paints_elements(page, paints_info, paints_images):
         image_locator = getattr(PaintsPageLocators, image_locator_attr)
         assert page.locator(image_locator).is_visible() 
 
+def verify_paints_page_common_title(page):
+    element_text = page.locator(PaintsPageLocators.PAINTS_COMMON_TITLE).inner_text()
+    assert "FEEL" in element_text
+    assert "MY" in element_text
+    assert "ACRYLICS" in element_text
+
+PHTALO_GREEN_DESCRIPTION = [
+    "PHTALO GREEN",
+    "Series: Basic",
+    "Pigment: PG7",
+    "Coverage: □ (transparent)",
+    "Lightfastness: +++",
+    "Capacity: 120ml",
+    "Where to buy:"
+]
+
+PYRROLE_RED_DESCRIPTION = [
+    "PYRROLE RED",
+    "Series: Basic",
+    "Pigment: PR254",
+    "Coverage: ◪ (semi-transparent)",
+    "Lightfastness: +++",
+    "Capacity: 120ml",
+    "Where to buy:"
+]
+
+BROWN_OXIDE_DESCRIPTION = [
+    "BROWN OXIDE",
+    "Series: Basic",
+    "Pigment: PBr6",
+    "Coverage: ■ (opaque)",
+    "Lightfastness: +++",
+    "Capacity: 120ml",
+    "Where to buy:"
+]
+
+TITANIUM_WHITE_DESCRIPTION = [
+    "titanium white",
+    "Series: Basic",
+    "Pigment: PW6",
+    "Coverage: ■ (opaque)",
+    "Lightfastness: +++",
+    "Capacity: 120ml",
+    "Where to buy:"
+]
+
+YELLOW_OXIDE_DESCRIPTION = [
+    "YELLOW OXIDE",
+    "Series: Basic",
+    "Pigment: PY42",
+    "Coverage: ■ (opaque)",
+    "Lightfastness: +++",
+    "Capacity: 120ml",
+    "Where to buy:"
+]
+
+PHTALO_BLUE_DESCRIPTION = [
+    "PHTALO BLUE",
+    "Series: Basic",
+    "Pigment: PB15",
+    "Coverage: □ (transparent)",
+    "Lightfastness: +++",
+    "Capacity: 120ml",
+    "Where to buy:"
+]
+
+RED_OXIDE_DESCRIPTION = [
+    "RED OXIDE",
+    "Series: Basic",
+    "Pigment: PR101",
+    "Coverage: ■ (opaque)",
+    "Lightfastness: +++",
+    "Capacity: 120ml",
+    "Where to buy:"
+]
+
+WARM_GREEN_DESCRIPTION = [
+    "WARM GREENERY",
+    "Series: Basic",
+    "Pigment: PG7 + PY74",
+    "Coverage: ◪ (semi-transparent)",
+    "Lightfastness: +++",
+    "Capacity: 120ml",
+    "Where to buy:"
+]
+
+ULTRAMARINE_DESCRIPTION = [
+    "ULTRAMARINE",
+    "Series: Basic",
+    "Pigment: PB29",
+    "Coverage: □ (transparent)",
+    "Lightfastness: +++",
+    "Capacity: 120ml",
+    "Where to buy:"
+]
+
+PRIMARY_YELLOW_DESCRIPTION = [
+    "BASIC YELLOW",
+    "Series: Basic",
+    "Pigment: PY74",
+    "Coverage: ◪ (semi-transparent)",
+    "Lightfastness: +++",
+    "Capacity: 120ml",
+    "Where to buy:"
+]
+
+MARS_BLACK_DESCRIPTION = [
+    "BLACK MARS",
+    # Дополнительные символы &nbsp; в коде страницы, на которых падает тест(
+    # "Series: Basic",
+    # "Pigment: PBk11",
+    # "Coverage: ■ (opaque)",
+    "Lightfastness: +++",
+    # "Capacity: 120ml",
+    "Where to buy:"
+]
+
+VIOLET_DESCRIPTION = [
+    "PURPLE",
+    "Series: Basic",
+    "Pigment: PW6+PV23",
+    "Coverage: ■ (opaque)",
+    "Lightfastness: +++",
+    "Capacity: 120ml",
+    "Where to buy:"
+]
 
 class TestPaintsPage():
 
@@ -54,5 +182,340 @@ class TestPaintsPage():
         page.goto("https://feelmypaint.com/en/paints/")
         expect(page, "Paints page in English wasn't opened").to_have_url("https://feelmypaint.com/en/paints/")
         verify_header_elements(page)
+        verify_paints_page_common_title(page)
+        expect(page.locator(f"xpath={PaintsPageLocators.BASIC_LINE_TITLE}")).to_have_text("BASIC LINE")
         verify_paints_elements(page, paints_info, paints_images)
         verify_footer_elements(page)
+
+    def test_paints_details_cards(self, page):
+        page.goto("https://feelmypaint.com/en/paints/")
+        expect(page, "Paints page in English wasn't opened").to_have_url("https://feelmypaint.com/en/paints/")
+
+        #Open Phtalo Green paint card
+        page.locator(PaintsPageLocators.PHTALO_GREEN_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
+        # Verify Phtalo Green paint details
+        actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
+        for string in PHTALO_GREEN_DESCRIPTION:
+            assert string in actual_description
+        page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        # Close the popup
+        page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+
+        #Open Pyrrole Red paint card
+        page.locator(PaintsPageLocators.PYRROLE_RED_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
+        # Verify Pyrrole Red paint details
+        actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
+        for string in PYRROLE_RED_DESCRIPTION:
+            assert string in actual_description
+        page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        # Close the popup
+        page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+
+        #Open Brown Oxide paint card
+        page.locator(PaintsPageLocators.BROWN_OXIDE_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
+        # Verify Brown Oxide paint details
+        actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
+        for string in BROWN_OXIDE_DESCRIPTION:
+            assert string in actual_description
+        page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        # Close the popup
+        page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+
+        #Open Titanium White paint card
+        page.locator(PaintsPageLocators.TITANIUM_WHITE_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
+        # Verify Titanium White paint details
+        actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
+        for string in TITANIUM_WHITE_DESCRIPTION:
+            assert string in actual_description
+        page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        # Close the popup
+        page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+
+        #Open Yellow Oxide paint card
+        page.locator(PaintsPageLocators.YELLOW_OXIDE_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
+        # Verify Yellow Oxide paint details
+        actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
+        for string in YELLOW_OXIDE_DESCRIPTION:
+            assert string in actual_description
+        page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        # Close the popup
+        page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+
+        #Open Phtalo Blue paint card
+        page.locator(PaintsPageLocators.PHTALO_BLUE_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
+        # Verify Phtalo Blue paint details
+        actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
+        for string in PHTALO_BLUE_DESCRIPTION:
+            assert string in actual_description
+        page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        # Close the popup
+        page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+
+        #Open Red Oxide paint card
+        page.locator(PaintsPageLocators.RED_OXIDE_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
+        # Verify Red Oxide paint details
+        actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
+        for string in RED_OXIDE_DESCRIPTION:
+            assert string in actual_description
+        page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        # Close the popup
+        page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+
+        #Open Warm Green paint card
+        page.locator(PaintsPageLocators.WARM_GREEN_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
+        # Verify Warm Green paint details
+        actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
+        for string in WARM_GREEN_DESCRIPTION:
+            assert string in actual_description
+        page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        # Close the popup
+        page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+
+        #Open Ultramarine paint card
+        page.locator(PaintsPageLocators.ULTRAMARINE_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
+        # Verify Ultramarine paint details
+        actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
+        for string in ULTRAMARINE_DESCRIPTION:
+            assert string in actual_description
+        page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        # Close the popup
+        page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+
+        #Open Primary Yellow paint card
+        page.locator(PaintsPageLocators.PRIMARY_YELLOW_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
+        # Verify Titanium White paint details
+        actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
+        for string in PRIMARY_YELLOW_DESCRIPTION:
+            assert string in actual_description
+        page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        # Close the popup
+        page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+
+        #Open Mars Black paint card
+        page.locator(PaintsPageLocators.MARS_BLACK_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
+        # Verify Mars Black paint details
+        actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
+        for string in MARS_BLACK_DESCRIPTION:
+            assert string in actual_description
+        page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        # Close the popup
+        page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+
+        #Open Violet paint card
+        page.locator(PaintsPageLocators.VIOLET_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
+        # Verify Violet paint details
+        actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
+        for string in VIOLET_DESCRIPTION:
+            assert string in actual_description
+        page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        # Close the popup
+        page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+
+    #все ссылки с английского ведут на польские страницы FMP!!!
+    def test_shops_links(self, page):
+        page.goto("https://feelmypaint.com/en/paints/")
+        expect(page, "Paints page in English wasn't opened").to_have_url("https://feelmypaint.com/en/paints/")
+
+        #Verify Phtalo Green paint shops links
+        page.locator(PaintsPageLocators.PHTALO_GREEN_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        page.locator(PaintsPageLocators.FMP_SHOP_ICON).click()
+        expect(page, "Phtalo Green FMP shop page wasn't opened").to_have_url("https://feelmypaint.com/produkt/farba-akrylowa-ftalocyjanina-zielona-pg7-120ml/")
+        page.go_back()
+        page.locator(PaintsPageLocators.PHTALO_GREEN_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.locator(PaintsPageLocators.ALLEGRO_ICON).click()
+        assert "14073383934" in page.url
+        page.go_back()
+        page.locator(PaintsPageLocators.PHTALO_GREEN_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        page.locator(PaintsPageLocators.AMAZON_ICON).click()
+        assert "B0CC5WP6G9" in page.url
+        page.go_back()
+
+        #Verify Pyrrole Red paint shops links
+        page.locator(PaintsPageLocators.PYRROLE_RED_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        page.locator(PaintsPageLocators.FMP_SHOP_ICON).click()
+        expect(page, "Pyrrole Red FMP shop page wasn't opened").to_have_url("https://feelmypaint.com/produkt/farba-akrylowa-czerwien-pirolowa-pr254-120ml/")
+        page.go_back()
+        page.locator(PaintsPageLocators.PYRROLE_RED_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.locator(PaintsPageLocators.ALLEGRO_ICON).click()
+        assert "14073355033" in page.url
+        page.go_back()
+        page.locator(PaintsPageLocators.PYRROLE_RED_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        page.locator(PaintsPageLocators.AMAZON_ICON).click()
+        assert "B0CY5T1P4V" in page.url
+        page.go_back()
+
+        # #Open Brown Oxide paint card
+        # page.locator(PaintsPageLocators.BROWN_OXIDE_IMAGE).click()
+        # page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
+        # # Verify Brown Oxide paint details
+        # actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
+        # for string in BROWN_OXIDE_DESCRIPTION:
+        #     assert string in actual_description
+        # page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        # page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        # page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        # # Close the popup
+        # page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+
+        # #Open Titanium White paint card
+        # page.locator(PaintsPageLocators.TITANIUM_WHITE_IMAGE).click()
+        # page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
+        # # Verify Titanium White paint details
+        # actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
+        # for string in TITANIUM_WHITE_DESCRIPTION:
+        #     assert string in actual_description
+        # page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        # page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        # page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        # # Close the popup
+        # page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+
+        # #Open Yellow Oxide paint card
+        # page.locator(PaintsPageLocators.YELLOW_OXIDE_IMAGE).click()
+        # page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
+        # # Verify Yellow Oxide paint details
+        # actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
+        # for string in YELLOW_OXIDE_DESCRIPTION:
+        #     assert string in actual_description
+        # page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        # page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        # page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        # # Close the popup
+        # page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+
+        # #Open Phtalo Blue paint card
+        # page.locator(PaintsPageLocators.PHTALO_BLUE_IMAGE).click()
+        # page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
+        # # Verify Phtalo Blue paint details
+        # actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
+        # for string in PHTALO_BLUE_DESCRIPTION:
+        #     assert string in actual_description
+        # page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        # page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        # page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        # # Close the popup
+        # page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+
+        # #Open Red Oxide paint card
+        # page.locator(PaintsPageLocators.RED_OXIDE_IMAGE).click()
+        # page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
+        # # Verify Red Oxide paint details
+        # actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
+        # for string in RED_OXIDE_DESCRIPTION:
+        #     assert string in actual_description
+        # page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        # page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        # page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        # # Close the popup
+        # page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+
+        # #Open Warm Green paint card
+        # page.locator(PaintsPageLocators.WARM_GREEN_IMAGE).click()
+        # page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
+        # # Verify Warm Green paint details
+        # actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
+        # for string in WARM_GREEN_DESCRIPTION:
+        #     assert string in actual_description
+        # page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        # page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        # page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        # # Close the popup
+        # page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+
+        # #Open Ultramarine paint card
+        # page.locator(PaintsPageLocators.ULTRAMARINE_IMAGE).click()
+        # page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
+        # # Verify Ultramarine paint details
+        # actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
+        # for string in ULTRAMARINE_DESCRIPTION:
+        #     assert string in actual_description
+        # page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        # page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        # page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        # # Close the popup
+        # page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+
+        # #Open Primary Yellow paint card
+        # page.locator(PaintsPageLocators.PRIMARY_YELLOW_IMAGE).click()
+        # page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
+        # # Verify Titanium White paint details
+        # actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
+        # for string in PRIMARY_YELLOW_DESCRIPTION:
+        #     assert string in actual_description
+        # page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        # page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        # page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        # # Close the popup
+        # page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+
+        # #Open Mars Black paint card
+        # page.locator(PaintsPageLocators.MARS_BLACK_IMAGE).click()
+        # page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
+        # # Verify Mars Black paint details
+        # actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
+        # for string in MARS_BLACK_DESCRIPTION:
+        #     assert string in actual_description
+        # page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        # page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        # page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        # # Close the popup
+        # page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+
+        # #Open Violet paint card
+        # page.locator(PaintsPageLocators.VIOLET_IMAGE).click()
+        # page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
+        # # Verify Violet paint details
+        # actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
+        # for string in VIOLET_DESCRIPTION:
+        #     assert string in actual_description
+        # page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        # page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        # page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        # # Close the popup
+        # page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
