@@ -2,8 +2,6 @@ from pages.locators import PaintsPageLocators
 from playwright.sync_api import expect
 from test_header import verify_header_elements
 from test_footer import verify_footer_elements
-import pytest
-import time
 
 #create a dictionary where key = data-id attribute and values = list of strings to check
 paints_info = {
@@ -347,8 +345,8 @@ class TestPaintsPage():
         # Close the popup
         page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
 
-    #все ссылки с английского ведут на польские страницы FMP!!!
     def test_shops_links(self, page):
+        #все ссылки с английского ведут на польские страницы FMP!!!
         page.goto("https://feelmypaint.com/en/paints/")
         expect(page, "Paints page in English wasn't opened").to_have_url("https://feelmypaint.com/en/paints/")
 
@@ -357,18 +355,21 @@ class TestPaintsPage():
         page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
         page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
         page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        #follow FMP shop hyperlink
         page.locator(PaintsPageLocators.FMP_SHOP_ICON).click()
         expect(page, "Phtalo Green FMP shop page wasn't opened").to_have_url("https://feelmypaint.com/produkt/farba-akrylowa-ftalocyjanina-zielona-pg7-120ml/")
         page.go_back()
         page.locator(PaintsPageLocators.PHTALO_GREEN_IMAGE).click()
         page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        #follow Allegro shop hyperlink
         page.locator(PaintsPageLocators.ALLEGRO_ICON).click()
-        assert "14073383934" in page.url
+        assert "14073383934" in page.url, "The expected product code '14073383934' is not in the Allegro URL: " + page.url
         page.go_back()
         page.locator(PaintsPageLocators.PHTALO_GREEN_IMAGE).click()
         page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        #follow Amazon shop hyperlink
         page.locator(PaintsPageLocators.AMAZON_ICON).click()
-        assert "B0CC5WP6G9" in page.url
+        assert "B0CC5WP6G9" in page.url, "The expected product code 'B0CC5WP6G9' is not in the Amazon URL: " + page.url
         page.go_back()
 
         #Verify Pyrrole Red paint shops links
@@ -376,146 +377,241 @@ class TestPaintsPage():
         page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
         page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
         page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        #follow FMP shop hyperlink
         page.locator(PaintsPageLocators.FMP_SHOP_ICON).click()
         expect(page, "Pyrrole Red FMP shop page wasn't opened").to_have_url("https://feelmypaint.com/produkt/farba-akrylowa-czerwien-pirolowa-pr254-120ml/")
         page.go_back()
+        #follow Allegro shop hyperlink
         page.locator(PaintsPageLocators.PYRROLE_RED_IMAGE).click()
         page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
         page.locator(PaintsPageLocators.ALLEGRO_ICON).click()
-        assert "14073355033" in page.url
+        assert "14073355033" in page.url, "The expected product code '14073355033' is not in the URL: " + page.url
         page.go_back()
+        #follow Amazon shop hyperlink
         page.locator(PaintsPageLocators.PYRROLE_RED_IMAGE).click()
         page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
         page.locator(PaintsPageLocators.AMAZON_ICON).click()
-        assert "B0CY5T1P4V" in page.url
+        assert "B0CY5T1P4V" in page.url, "The expected product code 'B0CY5T1P4V' is not in the Amazon URL: " + page.url
         page.go_back()
 
-        # #Open Brown Oxide paint card
-        # page.locator(PaintsPageLocators.BROWN_OXIDE_IMAGE).click()
-        # page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
-        # # Verify Brown Oxide paint details
-        # actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
-        # for string in BROWN_OXIDE_DESCRIPTION:
-        #     assert string in actual_description
-        # page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
-        # page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
-        # page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
-        # # Close the popup
-        # page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+        #Verify Brown Oxide paint shops links
+        page.locator(PaintsPageLocators.BROWN_OXIDE_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        #follow FMP shop hyperlink
+        page.locator(PaintsPageLocators.FMP_SHOP_ICON).click()
+        expect(page, "Brown Oxide FMP shop page wasn't opened").to_have_url("https://feelmypaint.com/produkt/feelmypaint-farba-akrylowa-brazowa-pbr7120ml/")
+        page.go_back()
+        #follow Allegro shop hyperlink
+        page.locator(PaintsPageLocators.BROWN_OXIDE_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.locator(PaintsPageLocators.ALLEGRO_ICON).click()
+        assert "14073042324" in page.url, "The expected product code '14073042324' is not in the URL: " + page.url
+        page.go_back()
+        #follow Amazon shop hyperlink
+        page.locator(PaintsPageLocators.BROWN_OXIDE_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        page.locator(PaintsPageLocators.AMAZON_ICON).click()
+        assert "B0CY5Q4YJ2" in page.url, "The expected product code 'B0CY5Q4YJ2' is not in the Amazon URL: " + page.url
+        page.go_back()
 
-        # #Open Titanium White paint card
-        # page.locator(PaintsPageLocators.TITANIUM_WHITE_IMAGE).click()
-        # page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
-        # # Verify Titanium White paint details
-        # actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
-        # for string in TITANIUM_WHITE_DESCRIPTION:
-        #     assert string in actual_description
-        # page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
-        # page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
-        # page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
-        # # Close the popup
-        # page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+        #Open Titanium White paint card
+        page.locator(PaintsPageLocators.TITANIUM_WHITE_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        #follow FMP shop hyperlink
+        page.locator(PaintsPageLocators.FMP_SHOP_ICON).click()
+        expect(page, "Titanium White FMP shop page wasn't opened").to_have_url("https://feelmypaint.com/produkt/farba-akrylowa-feelmypaint-biel-tytanowa-pw6120ml/")
+        page.go_back()
+        #follow Allegro shop hyperlink
+        page.locator(PaintsPageLocators.TITANIUM_WHITE_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.locator(PaintsPageLocators.ALLEGRO_ICON).click()
+        assert "14073347847" in page.url, "The expected product code '14073347847' is not in the URL: " + page.url
+        page.go_back()
+        #follow Amazon shop hyperlink
+        page.locator(PaintsPageLocators.TITANIUM_WHITE_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        page.locator(PaintsPageLocators.AMAZON_ICON).click()
+        assert "B0CBT2NYX9" in page.url, "The expected product code 'B0CBT2NYX9' is not in the Amazon URL: " + page.url
+        page.go_back()
 
-        # #Open Yellow Oxide paint card
-        # page.locator(PaintsPageLocators.YELLOW_OXIDE_IMAGE).click()
-        # page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
-        # # Verify Yellow Oxide paint details
-        # actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
-        # for string in YELLOW_OXIDE_DESCRIPTION:
-        #     assert string in actual_description
-        # page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
-        # page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
-        # page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
-        # # Close the popup
-        # page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+        #Open Yellow Oxide paint card
+        page.locator(PaintsPageLocators.YELLOW_OXIDE_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        #follow FMP shop hyperlink
+        page.locator(PaintsPageLocators.FMP_SHOP_ICON).click()
+        expect(page, "Yellow Oxide FMP shop page wasn't opened").to_have_url("https://feelmypaint.com/produkt/farba-akrylowa-zolty-tlenek-py42-120ml/")
+        page.go_back()
+        #follow Allegro shop hyperlink
+        page.locator(PaintsPageLocators.YELLOW_OXIDE_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.locator(PaintsPageLocators.ALLEGRO_ICON).click()
+        assert "14482070180" in page.url, "The expected product code '14482070180' is not in the URL: " + page.url
+        page.go_back()
+        #follow Amazon shop hyperlink
+        page.locator(PaintsPageLocators.YELLOW_OXIDE_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        page.locator(PaintsPageLocators.AMAZON_ICON).click()
+        assert "B0CKRMWSXR" in page.url, "The expected product code 'B0CKRMWSXR' is not in the Amazon URL: " + page.url
+        page.go_back()
 
-        # #Open Phtalo Blue paint card
-        # page.locator(PaintsPageLocators.PHTALO_BLUE_IMAGE).click()
-        # page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
-        # # Verify Phtalo Blue paint details
-        # actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
-        # for string in PHTALO_BLUE_DESCRIPTION:
-        #     assert string in actual_description
-        # page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
-        # page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
-        # page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
-        # # Close the popup
-        # page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+        #Open Phtalo Blue paint card
+        page.locator(PaintsPageLocators.PHTALO_BLUE_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        #follow FMP shop hyperlink
+        page.locator(PaintsPageLocators.FMP_SHOP_ICON).click()
+        expect(page, "Phtalo Blue FMP shop page wasn't opened").to_have_url("https://feelmypaint.com/produkt/farba-akrylowa-ftalocyjanina-niebeska-pb15-120ml/")
+        page.go_back()
+        #follow Allegro shop hyperlink
+        page.locator(PaintsPageLocators.PHTALO_BLUE_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.locator(PaintsPageLocators.ALLEGRO_ICON).click()
+        assert "14482024128" in page.url, "The expected product code '14482024128' is not in the URL: " + page.url
+        page.go_back()
+        #follow Amazon shop hyperlink
+        page.locator(PaintsPageLocators.PHTALO_BLUE_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        page.locator(PaintsPageLocators.AMAZON_ICON).click()
+        assert "B0CKRKYZ8H" in page.url, "The expected product code 'B0CKRKYZ8H' is not in the Amazon URL: " + page.url
+        page.go_back()
 
-        # #Open Red Oxide paint card
+        #Open Red Oxide paint card
+        page.locator(PaintsPageLocators.RED_OXIDE_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        #follow FMP shop hyperlink
+        page.locator(PaintsPageLocators.FMP_SHOP_ICON).click()
+        expect(page, "Red Oxide FMP shop page wasn't opened").to_have_url("https://feelmypaint.com/produkt/farba-akrylowa-feelmypaint-czerwony-tlenek-pr-101-120ml/")
+        page.go_back()
+        # #follow Allegro shop hyperlink
+        # #incorrect hyperlink navigates to wrong paint
         # page.locator(PaintsPageLocators.RED_OXIDE_IMAGE).click()
-        # page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
-        # # Verify Red Oxide paint details
-        # actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
-        # for string in RED_OXIDE_DESCRIPTION:
-        #     assert string in actual_description
-        # page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
         # page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
-        # page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
-        # # Close the popup
-        # page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+        # page.locator(PaintsPageLocators.ALLEGRO_ICON).click()
+        # assert "14482024128" in page.url, "The expected product code '14482024128' is not in the URL: " + page.url
+        # page.go_back()
+        #follow Amazon shop hyperlink
+        page.locator(PaintsPageLocators.RED_OXIDE_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        page.locator(PaintsPageLocators.AMAZON_ICON).click()
+        assert "B0CKRMGDBD" in page.url, "The expected product code 'B0CKRMGDBD' is not in the Amazon URL: " + page.url
+        page.go_back()
 
-        # #Open Warm Green paint card
-        # page.locator(PaintsPageLocators.WARM_GREEN_IMAGE).click()
-        # page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
-        # # Verify Warm Green paint details
-        # actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
-        # for string in WARM_GREEN_DESCRIPTION:
-        #     assert string in actual_description
-        # page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
-        # page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
-        # page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
-        # # Close the popup
-        # page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+        #Open Warm Green paint card
+        page.locator(PaintsPageLocators.WARM_GREEN_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        #follow FMP shop hyperlink
+        page.locator(PaintsPageLocators.FMP_SHOP_ICON).click()
+        expect(page, "Warm Green FMP shop page wasn't opened").to_have_url("https://feelmypaint.com/produkt/farba-akrylowa-feelmypaint-ciepla-zielen-pg7py74-120ml/")
+        page.go_back()
+        #follow Allegro shop hyperlink
+        page.locator(PaintsPageLocators.WARM_GREEN_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.locator(PaintsPageLocators.ALLEGRO_ICON).click()
+        assert "14481972385" in page.url, "The expected product code '14481972385' is not in the URL: " + page.url
+        page.go_back()
+        #follow Amazon shop hyperlink
+        page.locator(PaintsPageLocators.WARM_GREEN_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        page.locator(PaintsPageLocators.AMAZON_ICON).click()
+        assert "B0CJFDNZDR" in page.url, "The expected product code 'B0CJFDNZDR' is not in the Amazon URL: " + page.url
+        page.go_back()
 
-        # #Open Ultramarine paint card
-        # page.locator(PaintsPageLocators.ULTRAMARINE_IMAGE).click()
-        # page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
-        # # Verify Ultramarine paint details
-        # actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
-        # for string in ULTRAMARINE_DESCRIPTION:
-        #     assert string in actual_description
-        # page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
-        # page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
-        # page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
-        # # Close the popup
-        # page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+        #Open Ultramarine paint card
+        page.locator(PaintsPageLocators.ULTRAMARINE_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        #follow FMP shop hyperlink
+        page.locator(PaintsPageLocators.FMP_SHOP_ICON).click()
+        expect(page, "Ultramarine FMP shop page wasn't opened").to_have_url("https://feelmypaint.com/produkt/farba-akrylowafarba-akrylowa/")
+        page.go_back()
+        #follow Allegro shop hyperlink
+        page.locator(PaintsPageLocators.ULTRAMARINE_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.locator(PaintsPageLocators.ALLEGRO_ICON).click()
+        assert "14059615991" in page.url, "The expected product code '14059615991' is not in the URL: " + page.url
+        page.go_back()
+        #follow Amazon shop hyperlink
+        page.locator(PaintsPageLocators.ULTRAMARINE_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        page.locator(PaintsPageLocators.AMAZON_ICON).click()
+        assert "B0CBT1YK4W" in page.url, "The expected product code 'B0CBT1YK4W' is not in the Amazon URL: " + page.url
+        page.go_back()
 
-        # #Open Primary Yellow paint card
-        # page.locator(PaintsPageLocators.PRIMARY_YELLOW_IMAGE).click()
-        # page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
-        # # Verify Titanium White paint details
-        # actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
-        # for string in PRIMARY_YELLOW_DESCRIPTION:
-        #     assert string in actual_description
-        # page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
-        # page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
-        # page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
-        # # Close the popup
-        # page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+        #Open Primary Yellow paint card
+        page.locator(PaintsPageLocators.PRIMARY_YELLOW_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        #follow FMP shop hyperlink
+        page.locator(PaintsPageLocators.FMP_SHOP_ICON).click()
+        expect(page, "Primary Yellow FMP shop page wasn't opened").to_have_url("https://feelmypaint.com/produkt/farba-akrylowa-feelmypaint-zolta-py74-120ml/")
+        page.go_back()
+        #follow Allegro shop hyperlink
+        page.locator(PaintsPageLocators.PRIMARY_YELLOW_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.locator(PaintsPageLocators.ALLEGRO_ICON).click()
+        assert "14073363119" in page.url, "The expected product code '14073363119' is not in the URL: " + page.url
+        page.go_back()
+        #follow Amazon shop hyperlink
+        page.locator(PaintsPageLocators.PRIMARY_YELLOW_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        page.locator(PaintsPageLocators.AMAZON_ICON).click()
+        assert "B0CC62SBYX" in page.url, "The expected product code 'B0CC62SBYX' is not in the Amazon URL: " + page.url
+        page.go_back()
 
-        # #Open Mars Black paint card
-        # page.locator(PaintsPageLocators.MARS_BLACK_IMAGE).click()
-        # page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
-        # # Verify Mars Black paint details
-        # actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
-        # for string in MARS_BLACK_DESCRIPTION:
-        #     assert string in actual_description
-        # page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
-        # page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
-        # page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
-        # # Close the popup
-        # page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+        #Open Mars Black paint card
+        page.locator(PaintsPageLocators.MARS_BLACK_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        #follow FMP shop hyperlink
+        page.locator(PaintsPageLocators.FMP_SHOP_ICON).click()
+        expect(page, "Mars Black FMP shop page wasn't opened").to_have_url("https://feelmypaint.com/produkt/farba-akrylowa-feelmypaint-czarny-mars-pbk11120ml/")
+        page.go_back()
+        #follow Allegro shop hyperlink
+        page.locator(PaintsPageLocators.MARS_BLACK_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        page.locator(PaintsPageLocators.ALLEGRO_ICON).click()
+        assert "14073093537" in page.url, "The expected product code '14073093537' is not in the URL: " + page.url
+        page.go_back()
+        #follow Amazon shop hyperlink
+        page.locator(PaintsPageLocators.MARS_BLACK_IMAGE).click()
+        page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        page.locator(PaintsPageLocators.AMAZON_ICON).click()
+        assert "B0CBT2NYX9" in page.url, "The expected product code 'B0CBT2NYX9' is not in the Amazon URL: " + page.url
+        page.go_back()
 
-        # #Open Violet paint card
+        #Open Violet paint card
+        #incorrect hyperlinks navigate to wrong paint everywhere
         # page.locator(PaintsPageLocators.VIOLET_IMAGE).click()
-        # page.wait_for_selector(PaintsPageLocators.CARD_POPUP_SELECTOR)
-        # # Verify Violet paint details
-        # actual_description = page.locator(PaintsPageLocators.CARD_POPUP_SELECTOR).inner_text()
-        # for string in VIOLET_DESCRIPTION:
-        #     assert string in actual_description
         # page.wait_for_selector(PaintsPageLocators.FMP_SHOP_ICON)
         # page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
         # page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
-        # # Close the popup
-        # page.locator(PaintsPageLocators.CLOSE_POPUP_BUTTON).click()
+        # #follow FMP shop hyperlink
+        # page.locator(PaintsPageLocators.FMP_SHOP_ICON).click()
+        # expect(page, "Violet FMP shop page wasn't opened").to_have_url("https://feelmypaint.com/produkt/farba-akrylowa-feelmypaint-fioletowa-pw6pv23-120ml/")
+        # page.go_back()
+        # #follow Allegro shop hyperlink
+        # page.locator(PaintsPageLocators.VIOLET_IMAGE).click()
+        # page.wait_for_selector(PaintsPageLocators.ALLEGRO_ICON)
+        # page.locator(PaintsPageLocators.ALLEGRO_ICON).click()
+        # assert "14073363119" in page.url, "The expected product code '14073363119' is not in the URL: " + page.url
+        # page.go_back()
+        # #follow Amazon shop hyperlink
+        # page.locator(PaintsPageLocators.VIOLET_IMAGE).click()
+        # page.wait_for_selector(PaintsPageLocators.AMAZON_ICON)
+        # page.locator(PaintsPageLocators.AMAZON_ICON).click()
+        # assert "B0CC62SBYX" in page.url, "The expected product code 'B0CC62SBYX' is not in the Amazon URL: " + page.url
+        # page.go_back()

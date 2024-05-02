@@ -49,3 +49,22 @@ class PaintsPageLocators():
     AMAZON_ICON = "//img[contains(@src, 'https://feelmypaint.com/wp-content/uploads/2023/11/amazon-de-neutral-02-123ecb3b416ce1d3.jpeg')]"
     CLOSE_POPUP_BUTTON = "//a[@class='dialog-close-button dialog-lightbox-close-button' and not(contains(../../@style, 'display: none'))]"
     CARD_POPUP_SELECTOR = "//div[@data-elementor-type='popup']"
+
+class ShopPageLocators():
+    PROMO_BANNER = "//*[@data-id='bf6cbea']//*[@href='https://feelmypaint.com/produkt/zestaw-farb-akrylowych-6x120ml/']"
+    DELIVERY_ICON = "//*[@data-id='04910e8']//img[contains(@src, 'https://feelmypaint.com/wp-content/uploads/2023/11/aboutus-icons-1.png')]"
+    COMPLAINTS_RETURNS_ICON = "//*[@data-id='b2fb446']//img[contains(@src, 'https://feelmypaint.com/wp-content/uploads/2023/11/aboutus-icons-2.png')]"
+    GUARANTEE_ICON = "//*[@data-id='d77c784']//img[contains(@src, 'https://feelmypaint.com/wp-content/uploads/2023/11/aboutus-icons-3.png')]"
+    DELIVERY_TITLE = "//*[@data-id='04910e8']//div//div//div//h3"
+    COMPLAINTS_RETURNS_TITLE = "//*[@data-id='b2fb446']//div//div//div//h3"
+    GUARANTEE_TITLE = "//*[@data-id='d77c784']//div//div//div//h3"
+    DELIVERY_INFO = "//*[@data-id='04910e8']//div//div//div//p"
+    COMPLAINTS_RETURNS_INFO = "//*[@data-id='b2fb446']//div//div//div//p"
+    GUARANTEE_INFO = "//*[@data-id='d77c784']//div//div//div//p"
+    SINGLE_PAINT_ITEM_HEADER = "//*[@data-id='4909e82']//h2[contains(text(), 'Acrylic Paints 120ml')]"
+    SINGLE_PAINT_ITEM_IMAGE = "//*[@data-id='4909e82']//img[contains(@src, 'https://feelmypaint.com/wp-content/uploads/2023/11/fmp_white-1')]"
+    SETS_HEADER = "//*[@data-id='8ffc047']//h2[contains(text(), 'Acrylic Paint Sets')]"
+    SETS_IMAGE = "//*[@data-id='8ffc047']//img[contains(@src, 'https://feelmypaint.com/wp-content/uploads/2024/03/fmp_sets')]"
+    RECENTLY_ADDED_HEADER = "//h1[contains(text(), 'Recently added products')]"
+    SINGLE_PAINTS_LIST_HEADER = "//div//h1[contains(text(), 'All products in the category')]"
+
