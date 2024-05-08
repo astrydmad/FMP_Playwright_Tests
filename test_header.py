@@ -16,8 +16,8 @@ def verify_header_elements(page):
     expect(page.locator(f"xpath={HeaderLocators.LANGUAGE_CHOOSER_DROPDOWN}").nth(0)).to_be_visible()
     expect(page.locator(f"xpath={HeaderLocators.LANGUAGE_CHOOSER_DROPDOWN}").nth(0)).to_have_text("English")
     expect(page.locator(f"xpath={HeaderLocators.PAINTS_TOP_MENU_BUTTON}").nth(0)).to_be_visible()
-    expect(page.locator(f"xpath={HeaderLocators.CART}").nth(0)).to_be_visible()
-    expect(page.locator(f"xpath={HeaderLocators.CART}").nth(0)).to_contain_text("0,00")
+    expect(page.locator(HeaderLocators.CART)).to_be_visible()
+    expect(page.locator(HeaderLocators.CART)).to_contain_text("0,00")
 
 class TestHeader():
     

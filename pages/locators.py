@@ -1,5 +1,6 @@
 class Cookies():
     ACCEPT_COOKIES = "//label[@aria-label='Accept All']"
+    SAVE_COOKIES_PREFERENCIES = "//button[@id='hu-cookies-save']"
 
 class HeaderLocators():
     MAIN_LOGO = "//*[@data-id='2848f75' and not(contains(@style, 'visibility: hidden'))]//img[contains(@src, 'https://feelmypaint.com/wp-content/uploads/2023/11/logologo.png')]"
@@ -9,7 +10,7 @@ class HeaderLocators():
     SHOP_TOP_MENU_BUTTON = "//*[contains(@id, 'menu-1-7edf42c')]//a[contains(@href, 'shop')]"
     CONTACT_TOP_MENU_BUTTON = "//*[contains(@id, 'menu-1-7edf42c')]//a[contains(@href, 'contact')]"
     LANGUAGE_CHOOSER_DROPDOWN = "*//li[contains(@class, 'menu-item') and contains(@class, 'wpml-ls-slot-4') and contains(@class, 'wpml-ls-current-language')]//a[@title='English']//span[@class='wpml-ls-native']"
-    CART = "//*[@id='elementor-menu-cart__toggle_button']"
+    CART = "(//*[@id='elementor-menu-cart__toggle_button'])[1]"
 
 class FooterLocators():
     ACCOUNT = "//*[@id='menu-1-3368bae']//*[contains(@href, 'my-account')]"
@@ -67,4 +68,17 @@ class ShopPageLocators():
     SETS_IMAGE = "//*[@data-id='8ffc047']//img[contains(@src, 'https://feelmypaint.com/wp-content/uploads/2024/03/fmp_sets')]"
     RECENTLY_ADDED_HEADER = "//h1[contains(text(), 'Recently added products')]"
     SINGLE_PAINTS_LIST_HEADER = "//div//h1[contains(text(), 'All products in the category')]"
+    RECENTLY_ADDED_SECOND_ITEM = "//li[2]/div/a[@class='button product_type_simple add_to_cart_button ajax_add_to_cart']"
+    VIEW_CART_RECENTLY_ADDED_SECOND_ITEM="//li[2]/div/a[@class='added_to_cart wc-forward']"
 
+class Cart():
+    CART_PANEL = "//div[@class='elementor-menu-cart__main' and @aria-hidden='false']"
+    EMPTY_CART = "(//*[@class='woocommerce-mini-cart__empty-message'])[1]"
+    QUANTITY_IN_CART = "(//span[@class='elementor-button-icon-qty'])[1]"
+    ADDED_ITEMS = "//div[@class='elementor-menu-cart__product woocommerce-cart-form__cart-item cart_item']"
+    ADDED_ITEMS_LIST = "(//div[@class='elementor-menu-cart__products woocommerce-mini-cart cart woocommerce-cart-form__contents'])[1]"
+    REMOVE_ITEM_BUTTON = "(//div[@class='elementor-menu-cart__products woocommerce-mini-cart cart woocommerce-cart-form__contents'])[1]//*[@class='remove_from_cart_button']"
+    SUBTOTAL_SUM = "(//div[@class='elementor-menu-cart__subtotal']//span[@class='woocommerce-Price-amount amount'])[1]"
+    VIEW_CART_BUTTON = "(//a[@class='elementor-button elementor-button--view-cart elementor-size-md']//span[text()='View cart'])[1]"
+    CHECKOUT_BUTTON = "(//a[@class='elementor-button elementor-button--checkout elementor-size-md']//span[text()='Checkout'])[1]"
+    CLOSE_CART_PANEL_BUTTON = "(//div[@class='elementor-menu-cart__close-button'][1]"
