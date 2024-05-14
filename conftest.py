@@ -1,7 +1,7 @@
 import pytest
 from playwright.sync_api import sync_playwright, Page
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def browser_fixture():
     with sync_playwright() as playwright:
         browser = playwright.firefox.launch(headless=False)

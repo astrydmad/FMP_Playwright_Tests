@@ -70,6 +70,23 @@ class ShopPageLocators():
     SINGLE_PAINTS_LIST_HEADER = "//div//h1[contains(text(), 'All products in the category')]"
     RECENTLY_ADDED_SECOND_ITEM = "//li[2]/div/a[@class='button product_type_simple add_to_cart_button ajax_add_to_cart']"
     VIEW_CART_RECENTLY_ADDED_SECOND_ITEM="//li[2]/div/a[@class='added_to_cart wc-forward']"
+    PRICE_RECENTLY_ADDED_SECOND_ITEM = "//li[2]/a/span/span[@class='woocommerce-Price-amount amount']"
+
+class SinglePaintListShopPageLocators():
+    ADD_TO_CART_BUTTON_ULTRAMARINE = "//a[@href='?add-to-cart=1541']"
+    VIEW_CART_ULTRAMARINE = "//li[contains(@class, 'post-1541')]//a[@title='View cart']"
+    PRICE_ULTRAMARINE = "//li[contains(@class, 'post-1541')]//*[@class='woocommerce-Price-amount amount']"
+
+class SetsListShopPageLocators():
+    ADD_TO_CART_12_SET = "//a[@href='?add-to-cart=1528']"
+    VIEW_CART_12_SET = "//li[contains(@class, 'post-1528')]//a[@title='View cart']"
+    PRICE_12_SET = "//li[contains(@class, 'post-1528')]//*[@class='woocommerce-Price-amount amount']"
+
+class SinglePaintPageLocators:
+    ADD_TO_CART_PRODUCT_PAGE = "//button[(@type='submit') and (@name='add-to-cart')]"
+    PRODUCT_PAGE_TITLE = "//h1[@class='product_title entry-title elementor-heading-title elementor-size-default']"
+    TOASTED_NOTIFICATION_MESSAGE = "//div[@class='woocommerce-message']"
+    VIEW_CART_TOASTED_NOTIFICATION_BUTTON = "//a[@class='button wc-forward']"
 
 class Cart():
     CART_PANEL = "//div[@class='elementor-menu-cart__main' and @aria-hidden='false']"
